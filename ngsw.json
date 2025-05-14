@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1744894148003,
+  "timestamp": 1747200686397,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -84,7 +84,7 @@
         "/cordova_plugins.js",
         "/favicon.ico",
         "/index.html",
-        "/main.54b08fd3ca379bd6.js",
+        "/main.19591bf8aef129b6.js",
         "/manifest.webmanifest",
         "/polyfills-core-js.e9b3457756bc2ca9.js",
         "/polyfills-dom.516ff539260f3e0d.js",
@@ -524,6 +524,7 @@
         "/assets/icon/wallet_debit 1.png",
         "/assets/icon/wallet_expired.png",
         "/assets/icon/walletcbus.svg",
+        "/assets/icon/webpimg.webp",
         "/assets/icon/whatsapp.jpg",
         "/assets/icon/whatsapp.png",
         "/assets/icon/whatsapp.svg",
@@ -1071,6 +1072,7 @@
     "/assets/icon/wallet_debit 1.png": "4206ca28a31c7238b22dd0d9ab4742a308a8c4f7",
     "/assets/icon/wallet_expired.png": "ad103ae086e850ac0411c72b7e4390491bcce13d",
     "/assets/icon/walletcbus.svg": "1bbf2e496b96be8878c884f614fc5abd73e78af1",
+    "/assets/icon/webpimg.webp": "0633aac7c5b6eb4cc353c685069a7473fe5032b6",
     "/assets/icon/whatsapp.jpg": "8bf5fefe39d7e00968e536ab1e7f57456e0d133e",
     "/assets/icon/whatsapp.png": "dffe147a0066f94b1056df064c792ae4dfeef20c",
     "/assets/icon/whatsapp.svg": "90d073dbcba76dc5b112fcd1edce6c81a68fe3e8",
@@ -1123,8 +1125,8 @@
     "/cordova_plugins.js": "141654d25f4c1d4f94d3c4ca1ad25d3fc3305d5d",
     "/favicon.ico": "696dfbca3c3326f3a7832c34da7188bf98d59dbe",
     "/icons8-home.5c3af35990e7b937.svg": "08828a5223afec9acb9e79b6603dcaf5e561f1b9",
-    "/index.html": "0de26ede30505523daea322de29a24a3a7d96bfe",
-    "/main.54b08fd3ca379bd6.js": "37550f9d726275aa69590d04aef3e24ffcde7f24",
+    "/index.html": "8ec2cf73e3337f30678c3accece0fe6b3d93a1c3",
+    "/main.19591bf8aef129b6.js": "f2ccdadddc8e2d9aec7e42818bfb7c75cf87c9ad",
     "/manifest.webmanifest": "9a088b7c4339228d1082e666ce105dc889bc180c",
     "/montserrat-v14-latin-regular.016fddc825bb37e6.woff2": "7b7c670ef2f0ba7fc0ce6437e523ccbdc847fde2",
     "/montserrat-v14-latin-regular.b9de6aa2f4bccfc5.woff": "5af1938d1327395f47c84e57b6ba7756234d2262",
