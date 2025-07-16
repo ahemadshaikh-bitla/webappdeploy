@@ -17,10 +17,12 @@
   <link rel="dns-prefetch" href="//www.gstatic.com">
   <link rel="dns-prefetch" href="//maps.googleapis.com">
   <link rel="dns-prefetch" href="//checkout.razorpay.com">
+  <link rel="dns-prefetch" href="//unpkg.com">
 
-  <!-- Critical resources -->
+  <!-- Preload critical resources -->
   <link rel="icon" type="image/png" id="dynamic-favicon" href="assets/icon/favicon.png">
   <link rel="preload" as="image" href="assets/icon/tsrtc_logo.webp">
+  <link rel="preload" as="font" href="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2" type="font/woff2" crossorigin>
   
   <!-- Critical CSS inlined -->
   <style>
@@ -29,6 +31,13 @@
     .spinner { width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     app-root { display: block; }
+    /* Critical home page styles */
+    ion-content { --background: #fff; }
+    .search-container { padding: 16px; }
+    .search-button { width: 100%; margin-top: 16px; }
+    .centerImg { width: 200px; height: 100px; object-fit: contain; }
+    /* Optimize font loading */
+    @font-face { font-family: 'Roboto'; font-display: swap; src: local('Roboto'); }
   </style>
 
   <!-- add to homescreen for ios -->
@@ -57,9 +66,6 @@
   <link rel="manifest" href="manifest.webmanifest">
   <title>TSRTC Bus Booking</title>
   <meta name="theme-color" content="#1976d2">
-    
-  <!-- Draggabilly library for drag functionality -->
-  <script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
 <style>:root{--ion-color-primary:#3880ff;--ion-color-primary-rgb:56, 128, 255;--ion-color-primary-contrast:#ffffff;--ion-color-primary-contrast-rgb:255, 255, 255;--ion-color-primary-shade:#3171e0;--ion-color-primary-tint:#4c8dff;--ion-color-secondary:#3dc2ff;--ion-color-secondary-rgb:61, 194, 255;--ion-color-secondary-contrast:#ffffff;--ion-color-secondary-contrast-rgb:255, 255, 255;--ion-color-secondary-shade:#36abe0;--ion-color-secondary-tint:#50c8ff;--ion-color-tertiary:#5260ff;--ion-color-tertiary-rgb:82, 96, 255;--ion-color-tertiary-contrast:#ffffff;--ion-color-tertiary-contrast-rgb:255, 255, 255;--ion-color-tertiary-shade:#4854e0;--ion-color-tertiary-tint:#6370ff;--ion-color-success:#2dd36f;--ion-color-success-rgb:45, 211, 111;--ion-color-success-contrast:#ffffff;--ion-color-success-contrast-rgb:255, 255, 255;--ion-color-success-shade:#28ba62;--ion-color-success-tint:#42d77d;--ion-color-warning:#ffc409;--ion-color-warning-rgb:255, 196, 9;--ion-color-warning-contrast:#000000;--ion-color-warning-contrast-rgb:0, 0, 0;--ion-color-warning-shade:#e0ac08;--ion-color-warning-tint:#ffca22;--ion-color-danger:#eb445a;--ion-color-danger-rgb:235, 68, 90;--ion-color-danger-contrast:#ffffff;--ion-color-danger-contrast-rgb:255, 255, 255;--ion-color-danger-shade:#cf3c4f;--ion-color-danger-tint:#ed576b;--ion-color-dark:#222428;--ion-color-dark-rgb:34, 36, 40;--ion-color-dark-contrast:#ffffff;--ion-color-dark-contrast-rgb:255, 255, 255;--ion-color-dark-shade:#1e2023;--ion-color-dark-tint:#383a3e;--ion-color-medium:#92949c;--ion-color-medium-rgb:146, 148, 156;--ion-color-medium-contrast:#ffffff;--ion-color-medium-contrast-rgb:255, 255, 255;--ion-color-medium-shade:#808289;--ion-color-medium-tint:#9d9fa6;--ion-color-light:#f4f5f8;--ion-color-light-rgb:244, 245, 248;--ion-color-light-contrast:#000000;--ion-color-light-contrast-rgb:0, 0, 0;--ion-color-light-shade:#d7d8da;--ion-color-light-tint:#f5f6f9;--ion-color-red:#ed3237;--ion-color-red-rgb:237, 50, 55;--ion-color-red-contrast:#ffffff;--ion-color-red-contrast-rgb:255, 255, 255;--ion-color-red-shade:#d12c30;--ion-color-red-tint:#ef474b}html{--ion-font-family:var(--ion-default-font)}body{background:var(--ion-background-color)}@supports (padding-top: 20px){html{--ion-safe-area-top:var(--ion-statusbar-padding)}}@supports (padding-top: constant(safe-area-inset-top)){html{--ion-safe-area-top:constant(safe-area-inset-top);--ion-safe-area-bottom:constant(safe-area-inset-bottom);--ion-safe-area-left:constant(safe-area-inset-left);--ion-safe-area-right:constant(safe-area-inset-right)}}@supports (padding-top: env(safe-area-inset-top)){html{--ion-safe-area-top:env(safe-area-inset-top);--ion-safe-area-bottom:env(safe-area-inset-bottom);--ion-safe-area-left:env(safe-area-inset-left);--ion-safe-area-right:env(safe-area-inset-right)}}*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}html{width:100%;height:100%;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}html:not(.hydrated) body{display:none}body{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin:0;padding:0;position:fixed;width:100%;max-width:100%;height:100%;max-height:100%;transform:translateZ(0);text-rendering:optimizeLegibility;overflow:hidden;touch-action:manipulation;-webkit-user-drag:none;-ms-content-zooming:none;word-wrap:break-word;overscroll-behavior-y:none;-webkit-text-size-adjust:none;-moz-text-size-adjust:none;text-size-adjust:none}html{font-family:var(--ion-font-family)}@charset "UTF-8"</style><link rel="stylesheet" href="styles.99396c8bc0c37d87.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.99396c8bc0c37d87.css"></noscript></head>
  
 <body>
@@ -84,7 +90,32 @@
         }
       }, 2000); // Give Angular time to render
     });
+
+    // Defer loading of third-party scripts
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        // Load Google Maps only when needed
+        window.loadGoogleMaps = function() {
+          if (!window.google) {
+            const script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBs37-7lX9WStLueH8dGxlcS7O1eC1lNEo&sensor=false&v=3&libraries=places,geometry';
+            script.async = true;
+            document.head.appendChild(script);
+          }
+        };
+
+        // Load Razorpay only when needed
+        window.loadRazorpay = function() {
+          if (!window.Razorpay) {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.async = true;
+            document.head.appendChild(script);
+          }
+        };
+      }, 3000);
+    });
   </script>
-<script src="runtime.6dff288b9c48b409.js" type="module"></script><script src="polyfills.a8fa3f5b16e3b170.js" type="module"></script><script src="cordova.3c8302fba18b7d3c.js" defer></script><script src="main.03e85094b0ac657f.js" type="module"></script></body>
+<script src="runtime.11d3946fa64300f3.js" type="module"></script><script src="polyfills.a8fa3f5b16e3b170.js" type="module"></script><script src="cordova.3c8302fba18b7d3c.js" defer></script><script src="main.0681c9c06978c5c0.js" type="module"></script></body>
 
 </html>
