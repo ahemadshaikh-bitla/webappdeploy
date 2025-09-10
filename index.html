@@ -3,138 +3,98 @@
 
 <head>
   <meta charset="utf-8"/>
-  <base href="."/>
+  <base href="./"> <!-- For making www folder or mobweb build change href="/" to href="./" otherwise keep it href="/"-->
 
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="color-scheme" content="light dark"/>
+  <!-- <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
+  <meta name="viewport" content="initial-scale=1,user-scalable=no, width=device-width, height=device-height, viewport-fit=cover">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> -->
+
   <meta name="format-detection" content="telephone=no"/>
   <meta name="msapplication-tap-highlight" content="no"/>
 
-  <!-- Resource hints for performance -->
-  <link rel="preconnect" href="https://www.tsrtconline.site/" crossorigin="">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
-  <link rel="dns-prefetch" href="//www.tsrtconline.site/">
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
-  <link rel="dns-prefetch" href="//www.gstatic.com">
-  <link rel="dns-prefetch" href="//maps.googleapis.com">
-  <link rel="dns-prefetch" href="//checkout.razorpay.com">
-  <link rel="dns-prefetch" href="//unpkg.com">
-
-  <!-- Preload critical resources -->
+  <!-- Dynamic favicon -->
   <link rel="icon" type="image/png" id="dynamic-favicon" href="assets/icon/favicon.png"/>
-  <link rel="preload" as="image" href="assets/icon/tsrtc_logo.webp">
-  <link rel="preload" as="font" href="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2" type="font/woff2" crossorigin="">
-  
-  <!-- Critical CSS inlined -->
-  <style>
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
-    .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-    .home-skeleton { width: 100%; max-width: 400px; padding: 20px; }
-    .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; }
-    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    app-root { display: block; }
-    /* Critical home page styles - inline for instant rendering */
-    ion-app { display: block; }
-    ion-content { --background: #fff; display: block; }
-    .search-container { padding: 16px; background: #fff; }
-    .search-button { width: 100%; margin-top: 16px; min-height: 44px; background: #3498db; color: white; border: none; border-radius: 4px; }
-    .centerImg { width: 200px; height: 100px; object-fit: contain; display: block; margin: 0 auto; }
-    .home-content { min-height: 100vh; display: flex; flex-direction: column; }
-    .trip-segment { margin: 16px; }
-    .search-inputs { margin: 16px 0; }
-    .date-selector { margin: 8px 0; }
-    /* Instant UI for round trip */
-    .round-trip-container { margin: 16px 0; padding: 16px; background: #f8f9fa; border-radius: 8px; }
-    /* Hide elements until Angular loads */
-    .ng-hide { opacity: 0; pointer-events: none; }
-  </style>
+  <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- add to homescreen for ios -->
+  <!-- iOS specific -->
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
-  <!-- Query parameter handling - optimized -->
+  <!-- Firebase Scripts -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js" defer=""></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js" defer=""></script>
+
+  <!-- Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBs37-7lX9WStLueH8dGxlcS7O1eC1lNEo&amp;libraries=places,geometry" defer="">
+  </script>
+<script src="https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.min.js" defer=""></script>
+  <!-- URL Parameter Processing -->
   <script>
-    // Minimal query parsing - defer heavy operations
-    const params = new URLSearchParams(window.location.search);
-    if (params.size > 0) {
-      const result = {};
-      for (const [key, value] of params) {
-        result[key] = decodeURIComponent(value);
-      }
+    var result = {};
+    var query = window.location.href.split('?')[1];
+    if (query && query.split("&").length > 0) {
+      query.split("&").forEach(function(part) {
+        var item = part.split("=");
+        result[item[0]] = decodeURIComponent(item[1]);
+      });
       localStorage.setItem("booked_now", JSON.stringify(result));
     } else {
       localStorage.setItem("booked_now", null);
     }
-    
-    // Store phonepe parameter
-    const fromPhonePe = params.get('fromphonepe') || 'false';
-    localStorage.setItem("fromphonepe", fromPhonePe);
+    localStorage.setItem("fromphonepe", window.location.href.split('?')[1] ? window.location.href.split('?')[1].split('=')[1] : 'false');
   </script>
 
+  <!-- EaseBuzz Checkout -->
+  <script src="https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js" defer=""></script>
+
+  <!-- PWA Support -->
   <link rel="manifest" href="manifest.webmanifest">
-  <title>TSRTC Bus Booking</title>
   <meta name="theme-color" content="#1976d2">
-<link rel="stylesheet" href="styles.99396c8bc0c37d87.css"></head>
- 
+
+  <title></title>
+<link rel="stylesheet" href="styles.124245ed8be88950.css"></head>
+
 <body>
-  <!-- Show skeleton UI for instant perceived performance -->
-  <div class="loading-screen" id="initial-loader">
-    <div class="home-skeleton">
-      <div class="centerImg skeleton" style="height: 80px; margin: 20px auto;"></div>
-      <div class="search-container">
-        <div class="skeleton" style="height: 40px; margin: 8px 0; border-radius: 4px;"></div>
-        <div class="skeleton" style="height: 40px; margin: 8px 0; border-radius: 4px;"></div>
-        <div class="skeleton" style="height: 40px; margin: 8px 0; border-radius: 4px;"></div>
-        <div class="skeleton" style="height: 44px; margin: 16px 0; border-radius: 4px;"></div>
-      </div>
-    </div>
-  </div>
-
   <app-root></app-root>
-
   <noscript>Please enable JavaScript to continue using this application.</noscript>
-
-  <!-- Remove loading screen when app is ready -->
-  <script>
-    // Remove skeleton as soon as DOM content is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        const loader = document.getElementById('initial-loader');
-        if (loader) {
-          loader.style.opacity = '0';
-          loader.style.transition = 'opacity 0.3s ease';
-          setTimeout(() => loader.remove(), 300);
-        }
-      }, 500); // Minimal delay for skeleton effect
-    });
-
-    // Defer ALL non-critical resources until after app load
-    window.addEventListener('load', function() {
-      // Critical: Only load scripts when actually needed
-      window.loadGoogleMaps = function() {
-        return new Promise((resolve) => {
-          if (window.google?.maps) return resolve(window.google.maps);
-          const script = document.createElement('script');
-          script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBs37-7lX9WStLueH8dGxlcS7O1eC1lNEo&libraries=places,geometry';
-          script.async = true;
-          script.onload = () => resolve(window.google.maps);
-          document.head.appendChild(script);
-        });
-      };
-
-      window.loadRazorpay = function() {
-        return new Promise((resolve) => {
-          if (window.Razorpay) return resolve(window.Razorpay);
-          const script = document.createElement('script');
-          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-          script.async = true;
-          script.onload = () => resolve(window.Razorpay);
-          document.head.appendChild(script);
-        });
-      };
-    });
-  </script>
-  </script>
-<script src="runtime.dda333a7cce0befa.js" type="module"></script><script src="polyfills.a8fa3f5b16e3b170.js" type="module"></script><script src="cordova.3c8302fba18b7d3c.js" defer></script><script src="vendor.58705625dac4db9e.js" type="module"></script><script src="main.9b6497299fbe062b.js" type="module"></script></body>
+<script src="runtime.2e7dfcbab6e91d4c.js" type="module"></script><script src="polyfills.a7f2e850cda12342.js" type="module"></script><script src="main.fd9533328f885a86.js" type="module"></script></body>
 
 </html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Ionic App</title>
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry"
+  async
+  defer
+></script>
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html> -->
