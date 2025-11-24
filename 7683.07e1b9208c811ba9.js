@@ -396,53 +396,112 @@ function OfferCouponPage_ng_container_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngForOf", ctx_r1.couponList[0]);
   }
 }
-function OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_Template(rf, ctx) {
+function OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_div_15_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "ion-card", 56)(1, "ion-card-header", 57)(2, "ion-card-title")(3, "span", 58);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](4, "Coupon Code:");
+    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 68);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_div_15_Template_div_click_0_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r10);
+      const coupon_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2).$implicit;
+      const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2);
+      return _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵresetView"](ctx_r1.toggleMore(coupon_r11));
+    });
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](5, "strong", 59);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](7, "ion-card-content", 60)(8, "div", 61)(9, "div", 62);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](11, "div", 63);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](13, "div", 62);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](15, "p", 64);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](16, "Apply above mentioned code to avail this offer");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](17, "p", 65);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](18, "*T&C Applies");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()()();
   }
   if (rf & 2) {
-    const coupon_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]().$implicit;
+    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.showMore ? "View less" : "View more");
+  }
+}
+function OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "ion-card", 57)(1, "ion-card-header", 58)(2, "ion-card-title")(3, "span", 59);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](4, "Coupon Code:");
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](5, "strong", 60);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](7, "ion-card-content", 61)(8, "div", 62)(9, "div", 63);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](11, "div", 64);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](13, "div", 63);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](15, OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_div_15_Template, 2, 1, "div", 65);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](16, "div")(17, "span")(18, "p", 66);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](19, "Apply above mentioned code to avail this offer");
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](20, "p", 67);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](21, "*T&C Applies");
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()()()()();
+  }
+  if (rf & 2) {
+    const coupon_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]().$implicit;
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](" " + coupon_r10.coupon_code);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](" " + coupon_r11.coupon_code);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.splitCouponString(coupon_r10.description).part1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.splitCouponString(coupon_r11.description).part1);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.splitCouponString(coupon_r10.description).part2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.splitCouponString(coupon_r10.description).part3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.splitCouponString(coupon_r11.description).part2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵclassProp"]("collapsed", ctx_r1.isLongText(ctx_r1.splitCouponString(coupon_r11.description).part3));
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.splitCouponString(coupon_r11.description).part3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", ctx_r1.isLongText(ctx_r1.splitCouponString(coupon_r11.description).part3));
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵclassProp"]("noDescription", !coupon_r11.description);
   }
 }
 function OfferCouponPage_ng_container_2_ng_container_9_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](1, OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_Template, 19, 4, "ion-card", 55);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](1, OfferCouponPage_ng_container_2_ng_container_9_ion_card_1_Template, 22, 9, "ion-card", 56);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementContainerEnd"]();
   }
   if (rf & 2) {
-    const coupon_r10 = ctx.$implicit;
+    const coupon_r11 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", coupon_r10.coupon_code);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", coupon_r11.coupon_code);
+  }
+}
+function OfferCouponPage_ng_container_2_ng_container_10_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](1, "div", 69)(2, "p");
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](3, "No offers available at the moment.");
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementContainerEnd"]();
+  }
+}
+function OfferCouponPage_ng_container_2_div_11_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r12 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 70)(1, "div", 71)(2, "ion-row")(3, "div", 72);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](5, "ion-row", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function OfferCouponPage_ng_container_2_div_11_Template_ion_row_click_5_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r12);
+      const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2);
+      return _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵresetView"](ctx_r1.toggleMore());
+    });
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](6, "ion-col", 73);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx_r1.showDisc);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate1"](" ", "OK", " ");
   }
 }
 function OfferCouponPage_ng_container_2_Template(rf, ctx) {
@@ -460,14 +519,21 @@ function OfferCouponPage_ng_container_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](6, "Our Offers");
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()();
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](7, "ion-content", 53)(8, "div", 54);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](9, OfferCouponPage_ng_container_2_ng_container_9_Template, 2, 1, "ng-container", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](9, OfferCouponPage_ng_container_2_ng_container_9_Template, 2, 1, "ng-container", 31)(10, OfferCouponPage_ng_container_2_ng_container_10_Template, 4, 0, "ng-container", 0);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](11, OfferCouponPage_ng_container_2_div_11_Template, 8, 2, "div", 55);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementContainerEnd"]();
   }
   if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵclassProp"]("noCoupons", ctx_r1.couponList.length == 0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngForOf", ctx_r1.couponList);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", ctx_r1.couponList.length == 0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", ctx_r1.showMore);
   }
 }
 class OfferCouponPage {
@@ -483,6 +549,7 @@ class OfferCouponPage {
     this.couponList = [];
     this.arrowShowHide = false;
     this.storePage = '';
+    this.showMore = false;
   }
   ngOnInit() {
     this.metaData = this.commonStorage.getItem('metaData');
@@ -595,7 +662,7 @@ class OfferCouponPage {
     let num = parseFloat(percentage.replace('%', ''));
     let percent = Number.isInteger(num) ? `${num}%` : `${num}%`;
     const index = match.index;
-    const beforePercentage = text.substring(0, index).trim();
+    const beforePercentage = text.substring(0, index - 1).trim();
     const percentageTrimmed = percent.trim();
     const afterPercentage = text.substring(index + percentage.length).replace(/^[^\w]+/, '').trim();
     return {
@@ -624,6 +691,18 @@ class OfferCouponPage {
     if (!coupon) return 'CODE';
     return coupon.coupon_code || coupon.code || coupon.promo_code || coupon.coupon || coupon.offer_coupon || coupon.title || 'CODE';
   }
+  isLongText(text) {
+    return text && text.length > 40; // you can change the limit
+  }
+  toggleMore(coupon = null) {
+    if (!this.showMore) {
+      this.showMore = !this.showMore;
+      this.showDisc = coupon.description;
+    } else {
+      this.showMore = !this.showMore;
+      this.showDisc = "";
+    }
+  }
 }
 _OfferCouponPage = OfferCouponPage;
 _OfferCouponPage.ɵfac = function OfferCouponPage_Factory(__ngFactoryType__) {
@@ -635,10 +714,10 @@ _OfferCouponPage.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_6__
   standalone: false,
   decls: 3,
   vars: 3,
-  consts: [[4, "ngIf"], ["class", "background-cl", 4, "ngIf"], ["style", "border: 1px solid #D3E1FE;margin: 10px 16px;", 4, "ngFor", "ngForOf"], [1, "background-cl"], ["mode", "md", 1, "background-cl"], ["slot", "start", 4, "ngIf"], ["class", "toolbar-title-sea", 4, "ngIf"], [2, "color", "var(--viewBgColor)", 3, "click"], ["slot", "start"], [3, "click"], [1, "toolbar-title-sea"], ["mode", "md", 1, "h50", "bg-cl"], [1, "head"], [2, "border", "1px solid #D3E1FE", "margin", "10px 16px"], [2, "display", "flex", "align-items", "center"], ["size", "2", 2, "text-align", "center"], ["style", "font-size: 50px;", "src", "././assets/icon/referEarnNew.svg", 4, "ngIf"], ["style", "font-size: 50px;", "src", "././assets/icon/Flat.svg", 4, "ngIf"], ["size", "10"], ["class", "refer", 3, "ngStyle", 4, "ngIf"], ["class", "earnFriend", 4, "ngIf"], ["class", "valid", 4, "ngIf"], ["src", "././assets/icon/referEarnNew.svg", 2, "font-size", "50px"], ["src", "././assets/icon/Flat.svg", 2, "font-size", "50px"], [1, "refer", 3, "ngStyle"], [1, "earnFriend"], [1, "valid"], [2, "color", "#000"], [1, "theme2"], ["mode", "md", 1, "h50"], [1, "head", 2, "margin-left", "28%", "font-size", "16px"], [4, "ngFor", "ngForOf"], ["style", "border: 1px solid #D3E1FE;margin: 10px 16px;", 4, "ngIf"], ["style", "font-size: 30px;", "src", "././assets/icon/referEarnNew.svg", 4, "ngIf"], ["style", "font-size: 35px;", "src", "././assets/icon/Flat.svg", 4, "ngIf"], ["class", "refer", 4, "ngIf"], ["src", "././assets/icon/referEarnNew.svg", 2, "font-size", "30px"], ["src", "././assets/icon/Flat.svg", 2, "font-size", "35px"], [1, "refer"], [1, "copyRow"], ["size", "6", 1, "titleShow"], ["size", "6", 2, "text-align", "end"], ["src", "././assets/icon/ourbusCopy.svg", 1, "copyCode", 3, "click"], ["style", "padding: 8px;", 4, "ngIf"], ["style", "padding: 8px;text-align: end;", 4, "ngIf"], [2, "padding", "8px"], ["size", "10", 2, "font-size", "14px", "font-weight", "300", "color", "#747474"], [2, "padding", "8px", "text-align", "end"], ["size", "12", 2, "font-size", "14px", "font-weight", "300", "color", "#747474"], [1, "offers-header", "shyamoli-header"], ["mode", "md", 1, "offers-toolbar", "shyamoli-toolbar"], ["slot", "start", 2, "position", "absolute"], [1, "offers-title", "shyamoli-title", 2, "text-align", "center", "font-weight", "600"], [1, "offers-content", "shyamolitheme"], [1, "offers-wrapper"], ["class", "offer-card", 4, "ngIf"], [1, "offer-card"], [1, "offer-card-header"], [1, "offer-card-label"], [1, "offer-card-code"], [1, "offer-card-body"], [1, "offer-body-inner"], [1, "offer-label-text"], [1, "offer-percent"], [1, "offer-note"], [1, "offer-tnc"]],
+  consts: [[4, "ngIf"], ["class", "background-cl", 4, "ngIf"], ["style", "border: 1px solid #D3E1FE;margin: 10px 16px;", 4, "ngFor", "ngForOf"], [1, "background-cl"], ["mode", "md", 1, "background-cl"], ["slot", "start", 4, "ngIf"], ["class", "toolbar-title-sea", 4, "ngIf"], [2, "color", "var(--viewBgColor)", 3, "click"], ["slot", "start"], [3, "click"], [1, "toolbar-title-sea"], ["mode", "md", 1, "h50", "bg-cl"], [1, "head"], [2, "border", "1px solid #D3E1FE", "margin", "10px 16px"], [2, "display", "flex", "align-items", "center"], ["size", "2", 2, "text-align", "center"], ["style", "font-size: 50px;", "src", "././assets/icon/referEarnNew.svg", 4, "ngIf"], ["style", "font-size: 50px;", "src", "././assets/icon/Flat.svg", 4, "ngIf"], ["size", "10"], ["class", "refer", 3, "ngStyle", 4, "ngIf"], ["class", "earnFriend", 4, "ngIf"], ["class", "valid", 4, "ngIf"], ["src", "././assets/icon/referEarnNew.svg", 2, "font-size", "50px"], ["src", "././assets/icon/Flat.svg", 2, "font-size", "50px"], [1, "refer", 3, "ngStyle"], [1, "earnFriend"], [1, "valid"], [2, "color", "#000"], [1, "theme2"], ["mode", "md", 1, "h50"], [1, "head", 2, "margin-left", "28%", "font-size", "16px"], [4, "ngFor", "ngForOf"], ["style", "border: 1px solid #D3E1FE;margin: 10px 16px;", 4, "ngIf"], ["style", "font-size: 30px;", "src", "././assets/icon/referEarnNew.svg", 4, "ngIf"], ["style", "font-size: 35px;", "src", "././assets/icon/Flat.svg", 4, "ngIf"], ["class", "refer", 4, "ngIf"], ["src", "././assets/icon/referEarnNew.svg", 2, "font-size", "30px"], ["src", "././assets/icon/Flat.svg", 2, "font-size", "35px"], [1, "refer"], [1, "copyRow"], ["size", "6", 1, "titleShow"], ["size", "6", 2, "text-align", "end"], ["src", "././assets/icon/ourbusCopy.svg", 1, "copyCode", 3, "click"], ["style", "padding: 8px;", 4, "ngIf"], ["style", "padding: 8px;text-align: end;", 4, "ngIf"], [2, "padding", "8px"], ["size", "10", 2, "font-size", "14px", "font-weight", "300", "color", "#747474"], [2, "padding", "8px", "text-align", "end"], ["size", "12", 2, "font-size", "14px", "font-weight", "300", "color", "#747474"], [1, "offers-header", "shyamoli-header"], ["mode", "md", 1, "offers-toolbar", "shyamoli-toolbar"], ["slot", "start", 2, "position", "absolute"], [1, "offers-title", "shyamoli-title", 2, "text-align", "center", "font-weight", "600"], [1, "offers-content", "shyamolitheme"], [1, "offers-wrapper"], ["class", "whole center", 4, "ngIf"], ["class", "offer-card", 4, "ngIf"], [1, "offer-card"], [1, "offer-card-header"], [1, "offer-card-label"], [1, "offer-card-code"], [1, "offer-card-body"], [1, "offer-body-inner"], [1, "offer-label-text"], [1, "offer-percent"], ["class", "view-more", 3, "click", 4, "ngIf"], [1, "offer-note"], [1, "offer-tnc"], [1, "view-more", 3, "click"], [1, "no-offers"], [1, "whole", "center"], [1, "legend-box"], [1, "circle"], [2, "text-align", "center", "color", "var(--iconsAndButtonsColor)", "margin", "20px 0px 0px"]],
   template: function OfferCouponPage_Template(rf, ctx) {
     if (rf & 1) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](0, OfferCouponPage_ng_container_0_Template, 6, 3, "ng-container", 0)(1, OfferCouponPage_ng_container_1_Template, 9, 1, "ng-container", 0)(2, OfferCouponPage_ng_container_2_Template, 10, 1, "ng-container", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](0, OfferCouponPage_ng_container_0_Template, 6, 3, "ng-container", 0)(1, OfferCouponPage_ng_container_1_Template, 9, 1, "ng-container", 0)(2, OfferCouponPage_ng_container_2_Template, 12, 5, "ng-container", 0);
     }
     if (rf & 2) {
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", ctx.metaData.msiteFolder != "ourbustheme" && ctx.metaData.msiteFolder != "shyamolitheme");
@@ -649,7 +728,7 @@ _OfferCouponPage.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_6__
     }
   },
   dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_10__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgStyle, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonButtons, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonCard, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonCardContent, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonCardHeader, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonCardTitle, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonCol, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonContent, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonHeader, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonIcon, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonRow, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonTitle, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonToolbar, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonBackButton],
-  styles: [".refer[_ngcontent-%COMP%] {\n  color: #000;\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 2px;\n}\n\n.earnFriend[_ngcontent-%COMP%] {\n  color: #000;\n  font-size: 14px;\n  font-weight: 400;\n  margin: 0px;\n  margin-right: 2px;\n  margin-bottom: 4px;\n}\n\n.valid[_ngcontent-%COMP%] {\n  color: #5F5F5F;\n  font-size: 12px;\n  font-weight: 400;\n  margin: 2px;\n}\n\n.copyRow[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  margin: 8px;\n  background: #EFEFEF;\n  border-radius: 4px;\n  padding: 8px;\n}\n\n.titleShow[_ngcontent-%COMP%] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #2d2d2d;\n}\n\n.copyCode[_ngcontent-%COMP%] {\n  background: #4CAF50;\n  padding: 12px;\n  border-radius: 8px;\n  width: 24px;\n  height: 24px;\n}\n\n.background-cl[_ngcontent-%COMP%] {\n  color: var(--primary) !important;\n  --background: var(--primary) !important;\n}\n\n  .shyamolitheme ion-header.offers-header {\n  background: #000;\n}\n  .shyamolitheme .offers-title {\n  font-size: 20px;\n  font-weight: 700;\n  color: #fff;\n  text-align: center;\n  margin: 0;\n}\n  .shyamolitheme ion-content.offers-content {\n  --background: #f8f8f8;\n}\n  .shyamolitheme .offers-wrapper {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 24px;\n}\n@media (min-width: 480px) {\n    .shyamolitheme .offers-wrapper {\n    grid-template-columns: 1fr 1fr;\n  }\n}\n  .shyamolitheme .offer-card {\n  background: url(\"/assets/icon/shyamoli-offers1.svg\") no-repeat center center;\n  box-shadow: none;\n  position: relative;\n  overflow: hidden;\n}\n  .shyamolitheme .offer-card::before {\n  left: -13px;\n}\n  .shyamolitheme .offer-card::after {\n  right: -13px;\n}\n  .shyamolitheme .offer-card-header {\n  background: url(\"/assets/icon/shyamoli-offer-title.svg\") no-repeat center center;\n  justify-content: center;\n  align-items: center;\n  text-align: center;\n  color: #fff;\n}\n  .shyamolitheme .offer-card-label {\n  color: #fff;\n  font-size: 16px;\n  opacity: 0.85;\n}\n  .shyamolitheme .offer-card-code {\n  color: #fff;\n  font-size: 16px;\n  font-weight: 700;\n  letter-spacing: 0.8px;\n}\n  .shyamolitheme .offer-card-body {\n  text-align: center;\n  border-bottom-left-radius: 18px;\n  border-bottom-right-radius: 18px;\n}\n  .shyamolitheme .offer-toptext {\n  font-size: 24px;\n  font-weight: 700;\n  color: #111;\n}\n  .shyamolitheme .offer-percent {\n  font-size: 70px;\n  font-weight: 900;\n  color: #ff7a00;\n  line-height: 1;\n  margin: 5px 0;\n}\n  .shyamolitheme .offer-label-text {\n  font-size: 18px;\n  font-weight: 700;\n  color: #000;\n  margin-top: 5px;\n}\n  .shyamolitheme .offer-note {\n  font-size: 12px;\n  font-weight: 600;\n  color: #444;\n  margin-top: 10px;\n}\n  .shyamolitheme .offer-tnc {\n  font-weight: 500;\n  font-size: 11px;\n  color: #FF7945;\n  margin-top: 10px;\n}\n@media (hover: hover) {\n    .shyamolitheme .offer-card:hover {\n    transform: translateY(-4px);\n    transition: all 0.25s ease;\n  }\n}\n\n.toolbar-title-sea[_ngcontent-%COMP%] {\n  color: var(--viewBgColor);\n  font-weight: bold;\n  margin-left: 20px;\n}"]
+  styles: [".refer[_ngcontent-%COMP%] {\n  color: #000;\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 2px;\n}\n\n.earnFriend[_ngcontent-%COMP%] {\n  color: #000;\n  font-size: 14px;\n  font-weight: 400;\n  margin: 0px;\n  margin-right: 2px;\n  margin-bottom: 4px;\n}\n\n.valid[_ngcontent-%COMP%] {\n  color: #5F5F5F;\n  font-size: 12px;\n  font-weight: 400;\n  margin: 2px;\n}\n\n.copyRow[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  margin: 8px;\n  background: #EFEFEF;\n  border-radius: 4px;\n  padding: 8px;\n}\n\n.titleShow[_ngcontent-%COMP%] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #2d2d2d;\n}\n\n.copyCode[_ngcontent-%COMP%] {\n  background: #4CAF50;\n  padding: 12px;\n  border-radius: 8px;\n  width: 24px;\n  height: 24px;\n}\n\n.background-cl[_ngcontent-%COMP%] {\n  color: var(--primary) !important;\n  --background: var(--primary) !important;\n}\n\n  .shyamolitheme ion-header.offers-header {\n  background: #000;\n}\n  .shyamolitheme .offers-title {\n  font-size: 20px;\n  font-weight: 700;\n  color: #fff;\n  text-align: center;\n  margin: 0;\n}\n  .shyamolitheme ion-content.offers-content {\n  --background: #f8f8f8;\n}\n  .shyamolitheme .offers-wrapper {\n  height: 32%;\n}\n  .shyamolitheme .offer-card {\n  background: url(\"/assets/icon/shyamoli-offers1.svg\") no-repeat center top;\n  box-shadow: none;\n  height: 130%;\n  margin: 5px;\n}\n  .shyamolitheme .offer-card.ios {\n  height: 150% !important;\n}\n  .shyamolitheme .offer-card::before {\n  left: -13px;\n}\n  .shyamolitheme .offer-card::after {\n  right: -13px;\n}\n  .shyamolitheme .offer-card-header {\n  background: url(\"/assets/icon/shyamoli-offer-title.svg\") no-repeat center top;\n  justify-content: center;\n  align-items: center;\n  text-align: center;\n  color: #fff;\n  position: relative;\n  top: 4%;\n  padding: 16px;\n}\n  .shyamolitheme .offer-card-label {\n  color: #fff;\n  font-size: 16px;\n  opacity: 0.85;\n}\n  .shyamolitheme .offer-card-code {\n  color: #fff;\n  font-size: 16px;\n  font-weight: 700;\n  letter-spacing: 0.8px;\n}\n  .shyamolitheme .offer-card-body {\n  text-align: center;\n  border-bottom-left-radius: 18px;\n  border-bottom-right-radius: 18px;\n}\n  .shyamolitheme .offer-toptext {\n  font-size: 24px;\n  font-weight: 700;\n  color: #111;\n}\n  .shyamolitheme .offer-percent {\n  font-size: 70px;\n  font-weight: 900;\n  color: #ff7a00;\n  line-height: 1;\n  margin-top: 10px;\n}\n  .shyamolitheme .offer-label-text {\n  font-size: 18px;\n  font-weight: 700;\n  color: #000;\n  margin-top: 13px;\n  line-height: 18px;\n  text-align: start;\n  margin-left: 8px;\n  padding: 0px 30px;\n}\n  .shyamolitheme .offer-note {\n  font-size: 12px;\n  font-weight: 600;\n  color: #444;\n  margin-top: 5px;\n}\n  .shyamolitheme .offer-tnc {\n  font-weight: 500;\n  font-size: 11px;\n  color: #FF7945;\n  margin-top: 5px;\n}\n@media (hover: hover) {\n    .shyamolitheme .offer-card:hover {\n    transform: translateY(-4px);\n    transition: all 0.25s ease;\n  }\n}\n\n.toolbar-title-sea[_ngcontent-%COMP%] {\n  color: var(--viewBgColor);\n  font-weight: bold;\n  margin-left: 20px;\n}\n\n.offer-label-text.collapsed[_ngcontent-%COMP%] {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.view-more[_ngcontent-%COMP%] {\n  font-size: 13px;\n  color: var(--iconsAndButtonsColor);\n  margin-top: 4px;\n  cursor: pointer;\n  font-weight: 500;\n}\n\n.whole[_ngcontent-%COMP%] {\n  position: fixed;\n  z-index: 50;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.8);\n}\n\n.legend-box[_ngcontent-%COMP%] {\n  border-radius: 20px;\n  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.14);\n  background-color: #ffffff !important;\n  opacity: 1 !important;\n  padding: 18px 16px;\n  width: 96%;\n  height: auto;\n  font-family: \"Gilroy-Medium\", sans-serif;\n  font-size: 16px;\n  text-align: center;\n}\n\n.noDescription[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  margin-top: 25%;\n}\n\n.no-offers[_ngcontent-%COMP%] {\n  text-align: center;\n  font-size: 18px;\n  font-weight: bold;\n  color: #555555;\n}\n\n.noCoupons[_ngcontent-%COMP%] {\n  height: 100%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}"]
 });
 
 /***/ }),
