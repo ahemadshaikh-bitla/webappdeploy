@@ -12438,9 +12438,9 @@ class PaymentDetailsPage {
           }
         } else if (_this7.paymentType != "26" && _this7.paymentType != "37" && result.pay_gay_url && !result.code || result.html_body_contents && !result.pay_gay_url && _this7.paymentType != '21') {
           if (result.pay_flow) {
-            alert('cejcecece');
             let self = _this7;
-            const browser = _this7.iab.create(result.pay_flow, '_self ', {
+            console.log('inside the payment');
+            const browser = _this7.iab.create(result.pay_flow, '_self', {
               location: 'no',
               toolbar: 'no'
             });
