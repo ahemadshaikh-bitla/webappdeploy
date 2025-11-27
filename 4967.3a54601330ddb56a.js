@@ -15921,11 +15921,12 @@ class PaymentDetailsPage {
     var _this25 = this;
     return (0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
+        alert('check');
         // For web platform, open in new window and monitor manually
-        if (_this25.appData.isWEBAPP) {
-          window.open(payFlowUrl, '_blank');
-          return;
-        }
+        // if (this.appData.isWEBAPP) {
+        //     window.open(payFlowUrl, '_blank');
+        //     return;
+        // }
         // Set up the payment flow listener before opening browser
         const browserListener = _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.addListener('browserFinished', /*#__PURE__*/(0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
           console.log('Browser finished/closed');
