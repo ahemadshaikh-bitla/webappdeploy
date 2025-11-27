@@ -14,13 +14,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 10467);
 /* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @capacitor/core */ 15083);
-/* harmony import */ var _capacitor_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @capacitor/browser */ 27392);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 18530);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 71985);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 17705);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 18530);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 71985);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 17705);
 
 var _CustomInAppBrowserService;
-
 
 
 
@@ -28,17 +26,17 @@ class CustomInAppBrowserObject {
   constructor(url, target, options) {
     this.events = {};
     this.isOpen = false;
-    this.browserInstance = null;
+    this.modal = null;
     this.pollingInterval = null;
     this.lastUrl = '';
     this.url = url;
     this.target = target;
     this.options = options;
     // Initialize event subjects
-    this.events['loadstart'] = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subject();
-    this.events['loadstop'] = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subject();
-    this.events['exit'] = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subject();
-    this.events['loaderror'] = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subject();
+    this.events['loadstart'] = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subject();
+    this.events['loadstop'] = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subject();
+    this.events['exit'] = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subject();
+    this.events['loaderror'] = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subject();
     this.openBrowser();
   }
   openBrowser() {
@@ -47,57 +45,18 @@ class CustomInAppBrowserObject {
       try {
         _this.isOpen = true;
         _this.lastUrl = _this.url;
-        // Emit loadstart event
-        _this.events['loadstart'].next({
-          type: 'loadstart',
-          url: _this.url
-        });
-        if (_capacitor_core__WEBPACK_IMPORTED_MODULE_1__.Capacitor.isNativePlatform()) {
-          // Use Capacitor Browser for native platforms
-          yield _capacitor_browser__WEBPACK_IMPORTED_MODULE_2__.Browser.open({
-            url: _this.url,
-            windowName: _this.target,
-            toolbarColor: _this.options.toolbar === 'no' ? '#000000' : undefined,
-            presentationStyle: _this.options.presentationstyle || 'fullscreen'
-          });
-          // Start monitoring for URL changes and browser state
-          _this.startBrowserMonitoring();
-          // Listen for browser finished event
-          _capacitor_browser__WEBPACK_IMPORTED_MODULE_2__.Browser.addListener('browserFinished', () => {
-            _this.handleBrowserExit();
-          });
-          _capacitor_browser__WEBPACK_IMPORTED_MODULE_2__.Browser.addListener('browserPageLoaded', () => {
-            _this.events['loadstop'].next({
-              type: 'loadstop',
-              url: _this.lastUrl
-            });
-          });
-        } else {
-          // For web platform, open in new window/tab
-          const features = _this.buildWebFeatures();
-          _this.browserInstance = window.open(_this.url, _this.target, features);
-          if (_this.browserInstance) {
-            // Start monitoring the popup window
-            _this.startWebBrowserMonitoring();
-          } else {
-            // Popup blocked
-            _this.events['loaderror'].next({
-              type: 'loaderror',
-              url: _this.url,
-              code: -1,
-              message: 'Popup blocked or failed to open'
-            });
-          }
-        }
-        // Simulate loadstop after a short delay for initial load
+        // Emit loadstart event immediately
         setTimeout(() => {
-          if (_this.isOpen) {
-            _this.events['loadstop'].next({
-              type: 'loadstop',
-              url: _this.url
-            });
-          }
-        }, 1000);
+          _this.events['loadstart'].next({
+            type: 'loadstart',
+            url: _this.url
+          });
+        }, 100);
+        if (_capacitor_core__WEBPACK_IMPORTED_MODULE_1__.Capacitor.isNativePlatform()) {
+          yield _this.createNativeModal();
+        } else {
+          yield _this.createWebPopup();
+        }
       } catch (error) {
         console.error('Error opening browser:', error);
         _this.events['loaderror'].next({
@@ -109,58 +68,316 @@ class CustomInAppBrowserObject {
       }
     })();
   }
+  createNativeModal() {
+    var _this2 = this;
+    return (0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+    `;
+      const header = document.createElement('div');
+      header.style.cssText = `
+      background: #3880ff;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    `;
+      const title = document.createElement('h2');
+      title.textContent = 'Payment Gateway';
+      title.style.cssText = 'margin: 0; font-size: 18px; font-weight: 500;';
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '✕';
+      closeBtn.style.cssText = `
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+      closeBtn.addEventListener('click', () => {
+        _this2.close();
+      });
+      header.appendChild(title);
+      header.appendChild(closeBtn);
+      const iframe = document.createElement('iframe');
+      iframe.src = _this2.url;
+      iframe.style.cssText = `
+      width: 100%;
+      height: calc(100% - 70px);
+      border: none;
+      flex: 1;
+    `;
+      iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-popups-to-escape-sandbox');
+      overlay.appendChild(header);
+      overlay.appendChild(iframe);
+      document.body.appendChild(overlay);
+      _this2.modal = overlay;
+      _this2.setupIframeMonitoring(iframe);
+      iframe.onload = () => {
+        setTimeout(() => {
+          _this2.events['loadstop'].next({
+            type: 'loadstop',
+            url: _this2.getCurrentUrl(iframe)
+          });
+        }, 500);
+      };
+      _this2.startUrlMonitoring(iframe);
+    })();
+  }
+  createWebPopup() {
+    var _this3 = this;
+    return (0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const features = _this3.buildWebFeatures();
+      const popup = window.open('', 'paymentWindow', features);
+      if (!popup) {
+        _this3.events['loaderror'].next({
+          type: 'loaderror',
+          url: _this3.url,
+          code: -1,
+          message: 'Popup blocked'
+        });
+        return;
+      }
+      const wrapperHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Payment Gateway</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+            .header { 
+              background: #3880ff; 
+              color: white; 
+              padding: 15px; 
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .header h1 { font-size: 18px; font-weight: 500; }
+            .close-btn {
+              background: rgba(255,255,255,0.1);
+              border: none;
+              color: white;
+              font-size: 18px;
+              cursor: pointer;
+              padding: 10px 15px;
+              border-radius: 4px;
+            }
+            .close-btn:hover { background: rgba(255,255,255,0.2); }
+            #payment-frame { 
+              width: 100%; 
+              height: calc(100vh - 65px); 
+              border: none; 
+              display: block;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Payment Gateway</h1>
+            <button class="close-btn" onclick="closeWindow()">✕</button>
+          </div>
+          <iframe id="payment-frame" src="${_this3.url}"></iframe>
+          <script>
+            let lastUrl = '${_this3.url}';
+            let hasNotifiedLoad = false;
+            
+            function closeWindow() {
+              if (window.opener && !window.opener.closed) {
+                window.opener.postMessage({ type: 'exit', url: lastUrl }, '*');
+              }
+              window.close();
+            }
+            
+            function notifyParent(type, url) {
+              if (window.opener && !window.opener.closed) {
+                window.opener.postMessage({ type: type, url: url }, '*');
+              }
+            }
+            
+            function checkUrlChange() {
+              try {
+                const iframe = document.getElementById('payment-frame');
+                if (iframe && iframe.contentWindow && iframe.contentWindow.location) {
+                  const currentUrl = iframe.contentWindow.location.href;
+                  
+                  if (currentUrl !== lastUrl) {
+                    console.log('URL changed from', lastUrl, 'to', currentUrl);
+                    lastUrl = currentUrl;
+                    notifyParent('loadstart', currentUrl);
+                    
+                    setTimeout(() => {
+                      notifyParent('loadstop', currentUrl);
+                    }, 300);
+                  }
+                }
+              } catch (e) {
+                // Cross-origin restriction
+              }
+            }
+            
+            setInterval(checkUrlChange, 100);
+            
+            const iframe = document.getElementById('payment-frame');
+            if (iframe) {
+              iframe.addEventListener('load', function() {
+                if (!hasNotifiedLoad) {
+                  hasNotifiedLoad = true;
+                  setTimeout(() => {
+                    notifyParent('loadstop', lastUrl);
+                  }, 500);
+                }
+              });
+              
+              iframe.addEventListener('error', function() {
+                notifyParent('loaderror', lastUrl);
+              });
+            }
+            
+            window.addEventListener('beforeunload', function() {
+              notifyParent('exit', lastUrl);
+            });
+            
+            setTimeout(() => {
+              if (!hasNotifiedLoad) {
+                notifyParent('loadstop', lastUrl);
+                hasNotifiedLoad = true;
+              }
+            }, 1000);
+          </script>
+        </body>
+      </html>
+    `;
+      popup.document.write(wrapperHtml);
+      popup.document.close();
+      _this3.modal = popup;
+      _this3.startPopupMonitoring();
+    })();
+  }
+  setupIframeMonitoring(iframe) {
+    iframe.addEventListener('load', () => {
+      const currentUrl = this.getCurrentUrl(iframe);
+      if (currentUrl !== this.lastUrl) {
+        this.handleUrlChange(currentUrl);
+      }
+    });
+    iframe.addEventListener('error', () => {
+      this.events['loaderror'].next({
+        type: 'loaderror',
+        url: this.lastUrl,
+        code: -1,
+        message: 'Failed to load page'
+      });
+    });
+  }
+  getCurrentUrl(iframe) {
+    try {
+      if (iframe && iframe.contentWindow && iframe.contentWindow.location) {
+        return iframe.contentWindow.location.href;
+      }
+    } catch (e) {
+      // Cross-origin restriction
+    }
+    return this.lastUrl;
+  }
+  startUrlMonitoring(iframe) {
+    this.pollingInterval = setInterval(() => {
+      const currentUrl = this.getCurrentUrl(iframe);
+      if (currentUrl && currentUrl !== this.lastUrl) {
+        this.handleUrlChange(currentUrl);
+      }
+    }, 100);
+  }
+  startPopupMonitoring() {
+    const messageHandler = event => {
+      if (event.source === this.modal && event.data) {
+        const {
+          type,
+          url
+        } = event.data;
+        switch (type) {
+          case 'loadstart':
+            this.events['loadstart'].next({
+              type: 'loadstart',
+              url
+            });
+            this.lastUrl = url;
+            break;
+          case 'loadstop':
+            this.events['loadstop'].next({
+              type: 'loadstop',
+              url
+            });
+            break;
+          case 'loaderror':
+            this.events['loaderror'].next({
+              type: 'loaderror',
+              url,
+              code: -1,
+              message: 'Load error'
+            });
+            break;
+          case 'exit':
+            this.handleBrowserExit();
+            break;
+        }
+      }
+    };
+    window.addEventListener('message', messageHandler);
+    const checkClosed = () => {
+      if (this.modal && this.modal.closed) {
+        window.removeEventListener('message', messageHandler);
+        this.handleBrowserExit();
+      } else if (this.isOpen && this.modal && !this.modal.closed) {
+        setTimeout(checkClosed, 500);
+      }
+    };
+    setTimeout(checkClosed, 1000);
+  }
+  handleUrlChange(newUrl) {
+    if (newUrl && newUrl !== this.lastUrl) {
+      this.lastUrl = newUrl;
+      this.events['loadstart'].next({
+        type: 'loadstart',
+        url: newUrl
+      });
+      setTimeout(() => {
+        if (this.isOpen) {
+          this.events['loadstop'].next({
+            type: 'loadstop',
+            url: newUrl
+          });
+        }
+      }, 200);
+    }
+  }
   buildWebFeatures() {
     const features = [];
     if (this.options.location === 'no') features.push('location=no');
     if (this.options.toolbar === 'no') features.push('toolbar=no');
-    if (this.options.zoom === 'no') features.push('scrollbars=no');
-    // Default popup window features
-    features.push('width=800', 'height=600', 'resizable=yes', 'scrollbars=yes');
+    features.push('width=1000', 'height=800', 'resizable=yes', 'scrollbars=yes', 'status=no', 'menubar=no');
     return features.join(',');
-  }
-  startBrowserMonitoring() {
-    // For native platforms, we'll poll to check if payment URLs are being accessed
-    // This is a workaround since Capacitor Browser doesn't provide URL change events
-    if (_capacitor_core__WEBPACK_IMPORTED_MODULE_1__.Capacitor.isNativePlatform()) {
-      // We can't directly monitor URL changes in Capacitor Browser
-      // This is a limitation, but we can implement app lifecycle monitoring
-      // or use deep links/custom URL schemes for payment callbacks
-      console.log('Browser monitoring started for native platform');
-    }
-  }
-  startWebBrowserMonitoring() {
-    // Monitor the popup window for URL changes and closure
-    this.pollingInterval = setInterval(() => {
-      if (!this.browserInstance || this.browserInstance.closed) {
-        this.handleBrowserExit();
-        return;
-      }
-      try {
-        // Try to access the popup's location
-        const currentUrl = this.browserInstance.location.href;
-        if (currentUrl && currentUrl !== this.lastUrl) {
-          this.lastUrl = currentUrl;
-          // Emit loadstart for URL changes
-          this.events['loadstart'].next({
-            type: 'loadstart',
-            url: currentUrl
-          });
-          // Emit loadstop after URL change
-          setTimeout(() => {
-            if (this.isOpen) {
-              this.events['loadstop'].next({
-                type: 'loadstop',
-                url: currentUrl
-              });
-            }
-          }, 500);
-        }
-      } catch (error) {
-        // Cross-origin error - popup is on different domain
-        // This is normal for payment gateways
-        console.log('Cross-origin access blocked (normal for payment flows)');
-      }
-    }, 1000);
   }
   handleBrowserExit() {
     if (this.isOpen) {
@@ -173,7 +390,6 @@ class CustomInAppBrowserObject {
         type: 'exit',
         url: this.lastUrl
       });
-      // Clean up event subjects
       Object.values(this.events).forEach(subject => {
         if (!subject.closed) {
           subject.complete();
@@ -185,61 +401,43 @@ class CustomInAppBrowserObject {
     if (this.events[eventName]) {
       return this.events[eventName].asObservable();
     }
-    // Return empty observable for unsupported events
-    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_3__.Observable(observer => {
       observer.complete();
     });
   }
   executeScript(script) {
     return new Promise((resolve, reject) => {
-      if (_capacitor_core__WEBPACK_IMPORTED_MODULE_1__.Capacitor.isNativePlatform()) {
-        // Capacitor Browser doesn't support script execution
-        // This is a limitation - would need to use a different approach
-        console.warn('Script execution not supported in Capacitor Browser');
-        reject('Script execution not supported');
-      } else if (this.browserInstance && !this.browserInstance.closed) {
-        try {
-          // For web platform, try to execute script in popup
-          if ('code' in script) {
-            const result = this.browserInstance.eval(script.code);
-            resolve(result);
-          } else {
-            reject('File script execution not supported');
-          }
-        } catch (error) {
-          console.warn('Script execution failed:', error);
-          reject(error);
-        }
-      } else {
-        reject('Browser instance not available');
-      }
+      console.warn('Script execution limited in this implementation');
+      reject('Script execution not fully supported');
     });
   }
   insertCSS(css) {
     return new Promise((resolve, reject) => {
-      if (_capacitor_core__WEBPACK_IMPORTED_MODULE_1__.Capacitor.isNativePlatform()) {
-        console.warn('CSS insertion not supported in Capacitor Browser');
-        reject('CSS insertion not supported');
-      } else {
-        reject('CSS insertion not implemented for web platform');
-      }
+      reject('CSS insertion not implemented');
     });
   }
   show() {
-    if (this.browserInstance && !this.browserInstance.closed) {
-      this.browserInstance.focus();
+    if (this.modal) {
+      if (this.modal.style) {
+        this.modal.style.display = 'flex';
+      } else if (this.modal.focus) {
+        this.modal.focus();
+      }
     }
   }
   hide() {
-    // Not directly supported in most browsers
-    console.warn('Hide functionality not supported');
+    if (this.modal && this.modal.style) {
+      this.modal.style.display = 'none';
+    }
   }
   close() {
     this.isOpen = false;
-    if (_capacitor_core__WEBPACK_IMPORTED_MODULE_1__.Capacitor.isNativePlatform()) {
-      _capacitor_browser__WEBPACK_IMPORTED_MODULE_2__.Browser.close();
-    } else if (this.browserInstance && !this.browserInstance.closed) {
-      this.browserInstance.close();
+    if (this.modal) {
+      if (this.modal.remove) {
+        this.modal.remove();
+      } else if (this.modal.close) {
+        this.modal.close();
+      }
     }
     this.handleBrowserExit();
   }
@@ -247,10 +445,8 @@ class CustomInAppBrowserObject {
 class CustomInAppBrowserService {
   constructor() {}
   create(url, target = '_blank', options = {}) {
-    // Handle legacy string options format
     let parsedOptions = {};
     if (typeof options === 'string') {
-      // Parse legacy option string format
       const optionPairs = options.split(',');
       optionPairs.forEach(pair => {
         const [key, value] = pair.split('=');
@@ -263,7 +459,6 @@ class CustomInAppBrowserService {
     }
     return new CustomInAppBrowserObject(url, target, parsedOptions);
   }
-  // Legacy compatibility method
   open(url, target = '_blank', options = {}) {
     return this.create(url, target, options);
   }
@@ -272,45 +467,11 @@ _CustomInAppBrowserService = CustomInAppBrowserService;
 _CustomInAppBrowserService.ɵfac = function CustomInAppBrowserService_Factory(__ngFactoryType__) {
   return new (__ngFactoryType__ || _CustomInAppBrowserService)();
 };
-_CustomInAppBrowserService.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineInjectable"]({
+_CustomInAppBrowserService.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjectable"]({
   token: _CustomInAppBrowserService,
   factory: _CustomInAppBrowserService.ɵfac,
   providedIn: 'root'
 });
-
-/***/ }),
-
-/***/ 23650:
-/*!*****************************************************************!*\
-  !*** ./node_modules/@capacitor/browser/dist/esm/definitions.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-
-//# sourceMappingURL=definitions.js.map
-
-/***/ }),
-
-/***/ 27392:
-/*!***********************************************************!*\
-  !*** ./node_modules/@capacitor/browser/dist/esm/index.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Browser: () => (/* binding */ Browser)
-/* harmony export */ });
-/* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @capacitor/core */ 15083);
-/* harmony import */ var _definitions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./definitions */ 23650);
-
-const Browser = (0,_capacitor_core__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('Browser', {
-  web: () => __webpack_require__.e(/*! import() */ 4786).then(__webpack_require__.bind(__webpack_require__, /*! ./web */ 24786)).then(m => new m.BrowserWeb())
-});
-
-
-//# sourceMappingURL=index.js.map
 
 /***/ }),
 
@@ -16565,7 +16726,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _payment_details_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./payment-details-routing.module */ 33278);
 /* harmony import */ var _pipes_filter_oculto_pipe__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pipes/filter-oculto.pipe */ 43773);
 /* harmony import */ var _payment_details_page__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./payment-details.page */ 34400);
-/* harmony import */ var _awesome_cordova_plugins_in_app_browser_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @awesome-cordova-plugins/in-app-browser/ngx */ 51670);
+/* harmony import */ var _services_custom_inappbrowser_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/custom-inappbrowser.service */ 17090);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 17705);
 var _PaymentDetailsPageModule;
 
@@ -16585,7 +16746,7 @@ _PaymentDetailsPageModule.ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
   type: _PaymentDetailsPageModule
 });
 _PaymentDetailsPageModule.ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({
-  providers: [_awesome_cordova_plugins_in_app_browser_ngx__WEBPACK_IMPORTED_MODULE_3__.InAppBrowser],
+  providers: [_services_custom_inappbrowser_service__WEBPACK_IMPORTED_MODULE_3__.CustomInAppBrowserService],
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormsModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_7__.IonicModule, _payment_details_routing_module__WEBPACK_IMPORTED_MODULE_0__.PaymentDetailsPageRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.ReactiveFormsModule]
 });
 (function () {
