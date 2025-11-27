@@ -15921,81 +15921,282 @@ class PaymentDetailsPage {
     var _this25 = this;
     return (0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
-        alert('check');
-        // For web platform, open in new window and monitor manually
-        // if (this.appData.isWEBAPP) {
-        //     window.open(payFlowUrl, '_blank');
-        //     return;
-        // }
-        // Set up the payment flow listener before opening browser
-        const browserListener = _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.addListener('browserFinished', /*#__PURE__*/(0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-          console.log('Browser finished/closed');
-          yield _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.removeAllListeners();
-          // Handle manual browser close if needed
-        }));
-        // Open the payment URL in Capacitor Browser
-        yield _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.open({
-          url: payFlowUrl,
-          presentationStyle: 'fullscreen',
-          windowName: '_blank'
-        });
-        // For native platforms, we need to monitor URL changes differently
-        // Since Capacitor Browser doesn't provide URL change events like InAppBrowser,
-        // we'll rely on the payment gateway redirects and polling for completion
-        // Start monitoring for payment completion
-        _this25.startPaymentMonitoring(result);
+        // Store the booking result for later use
+        _this25.commonStorage.localSet('pendingPaymentResult', result);
+        // For all platforms, try to use Capacitor Browser first
+        if (!_this25.appData.isWEBAPP && (_this25.platform.is('capacitor') || _this25.platform.is('cordova'))) {
+          // Native mobile apps - use Capacitor Browser
+          const browserListener = _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.addListener('browserFinished', /*#__PURE__*/(0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+            console.log('Payment browser closed');
+            yield _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.removeAllListeners();
+            // Start automatic payment status checking when browser closes
+            _this25.checkPaymentStatusAfterBrowserClose(result);
+          }));
+          // Open the payment URL in Capacitor Browser
+          yield _capacitor_browser__WEBPACK_IMPORTED_MODULE_9__.Browser.open({
+            url: payFlowUrl,
+            presentationStyle: 'fullscreen',
+            windowName: '_blank'
+          });
+        } else if (_this25.appData.isWEBAPP) {
+          // Web platform - use iframe or popup with better control
+          _this25.openPaymentInWebBrowser(payFlowUrl, result);
+        }
       } catch (error) {
         console.error('Error opening payment in Capacitor Browser:', error);
-        // Fallback: if Capacitor Browser fails, try opening in system browser
+        // Fallback for all platforms
         if (_this25.appData.isWEBAPP) {
-          window.open(payFlowUrl, '_blank');
+          _this25.openPaymentInWebBrowser(payFlowUrl, result);
         } else {
-          // For native apps, show error message
           _this25.util.showToast('Unable to open payment. Please try again.');
         }
       }
     })();
   }
   /**
-   * Monitor payment completion by checking booking status
+   * Handle web payment with better control than simple new tab
    */
-  startPaymentMonitoring(result) {
-    const checkInterval = setInterval(() => {
-      // Check if user returned to the app (browser closed)
-      // You can implement app state monitoring or user interaction detection here
-      // For now, we'll provide manual buttons for user to confirm payment status
-      this.showPaymentStatusDialog(result, checkInterval);
-    }, 5000); // Check every 5 seconds
-    // Stop monitoring after 10 minutes
-    setTimeout(() => {
-      clearInterval(checkInterval);
-    }, 600000);
+  openPaymentInWebBrowser(payFlowUrl, result) {
+    // Create a popup window with specific dimensions and features
+    const popupWidth = Math.min(800, window.innerWidth - 100);
+    const popupHeight = Math.min(600, window.innerHeight - 100);
+    const left = (window.innerWidth - popupWidth) / 2;
+    const top = (window.innerHeight - popupHeight) / 2;
+    const popup = window.open(payFlowUrl, 'payment_window', `width=${popupWidth},height=${popupHeight},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no`);
+    if (popup) {
+      // Monitor the popup for closure
+      this.monitorWebPaymentPopup(popup, result);
+    } else {
+      // Popup blocked, fallback to same window
+      console.log('Popup blocked, opening in same window');
+      window.location.href = payFlowUrl;
+    }
   }
   /**
-   * Show dialog for user to confirm payment status
+   * Monitor web payment popup and detect completion
+   */
+  monitorWebPaymentPopup(popup, result) {
+    let pollCount = 0;
+    const maxPolls = 300; // Monitor for 5 minutes (1 second x 300)
+    const popupMonitor = setInterval(() => {
+      pollCount++;
+      try {
+        // Check if popup is closed
+        if (popup.closed) {
+          clearInterval(popupMonitor);
+          console.log('Payment popup closed by user');
+          // Wait a moment then start checking payment status
+          setTimeout(() => {
+            this.startAutomaticPaymentDetection(result);
+          }, 2000);
+          return;
+        }
+        // Try to access popup URL (will work only if same origin)
+        try {
+          const popupUrl = popup.location.href;
+          // Check for success/failure patterns in URL (same as old InAppBrowser logic)
+          if (popupUrl.includes('ticket-confirm') || popupUrl.includes('status=0') || popupUrl.includes('payment_success')) {
+            clearInterval(popupMonitor);
+            popup.close();
+            this.handleAutomaticPaymentSuccess(result);
+            return;
+          }
+          if (popupUrl.includes('ticket-cancel') || popupUrl.includes('status=1') || popupUrl.includes('payment_failed') || popupUrl.includes('failed')) {
+            clearInterval(popupMonitor);
+            popup.close();
+            this.handleAutomaticPaymentFailure();
+            return;
+          }
+        } catch (e) {
+          // Cross-origin restriction, can't access popup URL
+          // This is expected for external payment gateways
+        }
+        // Timeout check
+        if (pollCount >= maxPolls) {
+          clearInterval(popupMonitor);
+          if (!popup.closed) {
+            popup.close();
+          }
+          // Start API-based detection as fallback
+          this.startAutomaticPaymentDetection(result);
+        }
+      } catch (error) {
+        console.error('Error monitoring popup:', error);
+      }
+    }, 1000); // Check every second
+  }
+  /**
+   * Check payment status automatically after browser closes
+   */
+  checkPaymentStatusAfterBrowserClose(result) {
+    // Wait a moment for any redirects to complete
+    setTimeout(() => {
+      this.startAutomaticPaymentDetection(result);
+    }, 2000);
+  }
+  /**
+   * Automatically detect payment completion using the same logic as InAppBrowser
+   */
+  startAutomaticPaymentDetection(result) {
+    var _this26 = this;
+    let pollCount = 0;
+    const maxPolls = 24; // Check for 2 minutes (5 seconds x 24 = 2 minutes)
+    const pollInterval = setInterval(/*#__PURE__*/(0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      pollCount++;
+      try {
+        // Check if payment completed using your backend API
+        const paymentStatus = yield _this26.checkPaymentCompletionAPI(result);
+        if (paymentStatus === 'success') {
+          clearInterval(pollInterval);
+          _this26.commonStorage.localRemove('pendingPaymentResult');
+          _this26.handleAutomaticPaymentSuccess(result);
+          return;
+        } else if (paymentStatus === 'failed') {
+          clearInterval(pollInterval);
+          _this26.commonStorage.localRemove('pendingPaymentResult');
+          _this26.handleAutomaticPaymentFailure();
+          return;
+        }
+        // If no clear status and polling timeout, check one more time then show dialog
+        if (pollCount >= maxPolls) {
+          clearInterval(pollInterval);
+          // Final check before showing manual dialog
+          const finalStatus = yield _this26.checkPaymentCompletionAPI(result);
+          if (finalStatus === 'success') {
+            _this26.handleAutomaticPaymentSuccess(result);
+          } else if (finalStatus === 'failed') {
+            _this26.handleAutomaticPaymentFailure();
+          } else {
+            // Only show manual dialog if automatic detection completely fails
+            _this26.showPaymentStatusDialog(result, null);
+          }
+        }
+      } catch (error) {
+        console.error('Error in automatic payment detection:', error);
+        if (pollCount >= maxPolls) {
+          clearInterval(pollInterval);
+          _this26.showPaymentStatusDialog(result, null);
+        }
+      }
+    }), 5000); // Check every 5 seconds
+  }
+  /**
+   * Check payment completion using API (mimics URL detection from InAppBrowser)
+   */
+  checkPaymentCompletionAPI(result) {
+    var _this27 = this;
+    return (0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        // Use your existing ticket details API to check status
+        const pnrNumber = result.pnr_number || result.order_id;
+        if (!pnrNumber) {
+          return 'pending';
+        }
+        // Check if booking was successful by querying ticket details
+        // This replaces the URL pattern checking from InAppBrowser
+        const ticketResponse = yield _this27.apiFactory.getTicketDetails(pnrNumber).toPromise();
+        if (ticketResponse && ticketResponse.code === 200) {
+          // Check if ticket exists and payment was completed
+          if (ticketResponse.ticket_number && (ticketResponse.payment_status === 'completed' || ticketResponse.payment_status === 'success' || ticketResponse.payment_status === 'paid' || !ticketResponse.payment_status)) {
+            // Sometimes successful tickets don't have payment_status
+            return 'success';
+          }
+        } else if (ticketResponse && (ticketResponse.code === 422 || ticketResponse.code === 404)) {
+          // Ticket not found or payment failed
+          return 'failed';
+        }
+        return 'pending';
+      } catch (error) {
+        console.error('Payment status API check failed:', error);
+        return 'pending';
+      }
+    })();
+  }
+  /**
+   * Handle automatic payment success (same logic as InAppBrowser)
+   */
+  handleAutomaticPaymentSuccess(result) {
+    this.firebaseAnalyticsService.logCustomEvent('payment_success', {
+      page: 'Payment Details Page'
+    });
+    this.commonStorage.localSet('bookedTicketDetails', result);
+    localStorage.setItem('bookingDetails', JSON.stringify(result));
+    let navigationExtras = {
+      queryParams: {
+        new_booking: 'true'
+      }
+    };
+    this.navigationExtras = navigationExtras;
+    this.viewTicket = true;
+    if (this.metaData.msiteFolder == 'ourbustheme' || this.metaData.msiteFolder == 'shyamolitheme') {
+      this.paymentSuccessEvent();
+      this.navCtrl.navigateRoot('booking-details', this.navigationExtras);
+    }
+  }
+  /**
+   * Handle automatic payment failure (same logic as InAppBrowser)
+   */
+  handleAutomaticPaymentFailure() {
+    this.commonStorage.localRemove('bookedTicketDetails');
+    this.viewTicket = false;
+    this.paymentFailed = true;
+    if (this.metaData.msiteFolder == 'ourbustheme') {
+      this.paymentFailureEvent();
+    }
+    this.firebaseAnalyticsService.logCustomEvent('payment_failed', {
+      page: 'Payment Details Page'
+    });
+  }
+  /**
+   * Enhanced web payment monitoring with window focus detection
+   */
+  setupWebPaymentMonitoring(result) {
+    let focusCount = 0;
+    const focusHandler = () => {
+      focusCount++;
+      // User returned to the main window, likely from payment
+      // Wait a moment for any redirects to complete, then check status
+      setTimeout(() => {
+        this.startAutomaticPaymentDetection(result);
+        // Remove the event listener after first check
+        window.removeEventListener('focus', focusHandler);
+      }, 1500);
+    };
+    // Listen for window focus events (when user returns from payment)
+    window.addEventListener('focus', focusHandler);
+    // Also set up a backup timer in case focus event doesn't fire
+    setTimeout(() => {
+      window.removeEventListener('focus', focusHandler);
+      // If no focus event was detected, still try to check payment status
+      if (focusCount === 0) {
+        this.startAutomaticPaymentDetection(result);
+      }
+    }, 300000); // 5 minutes backup
+  }
+  /**
+   * Show dialog for user to confirm payment status (fallback only)
    */
   showPaymentStatusDialog(result, checkInterval) {
-    var _this26 = this;
+    var _this28 = this;
     return (0,_Users_ahemad_Documents_officeWorkspace_capacitor_customer_app_ts_operator_ionic4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      clearInterval(checkInterval);
-      const alert = yield _this26.alertController.create({
-        header: 'Payment Status',
-        message: 'Please confirm your payment status:',
+      const alert = yield _this28.alertController.create({
+        header: 'Payment Status Confirmation',
+        message: 'We could not automatically detect your payment status. Please confirm:',
         buttons: [{
           text: 'Payment Successful',
           handler: () => {
-            _this26.handleCapacitorPaymentSuccess(result);
+            _this28.handleCapacitorPaymentSuccess(result);
           }
         }, {
           text: 'Payment Failed',
           handler: () => {
-            _this26.handleCapacitorPaymentFailure();
+            _this28.handleCapacitorPaymentFailure();
           }
         }, {
-          text: 'Still Processing',
+          text: 'Check Again',
           handler: () => {
-            // Continue monitoring
-            _this26.startPaymentMonitoring(result);
+            // Retry automatic detection
+            _this28.startAutomaticPaymentDetection(result);
           }
         }]
       });
