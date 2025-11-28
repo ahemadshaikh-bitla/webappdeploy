@@ -15929,9 +15929,305 @@ class PaymentDetailsPage {
   }
   /**
    * Creates a web-based in-app browser experience for mobile web apps
-   * Uses iframe within a modal overlay to simulate native in-app browser behavior
+   * Falls back to popup window if iframe is blocked by X-Frame-Options
    */
   createWebInAppBrowser(url, result, self) {
+    console.log('Creating web in-app browser for URL:', url);
+    // First, try to detect if the URL will be blocked by X-Frame-Options
+    // by attempting a quick iframe test
+    this.tryIframeOrFallbackToPopup(url, result, self);
+  }
+  tryIframeOrFallbackToPopup(url, result, self) {
+    // Create a small test iframe to check if the URL can be loaded
+    const testIframe = document.createElement('iframe');
+    testIframe.style.cssText = 'width: 1px; height: 1px; position: absolute; left: -9999px; opacity: 0;';
+    testIframe.src = url;
+    let fallbackTriggered = false;
+    // Set up fallback timer - if iframe doesn't load within 3 seconds, assume it's blocked
+    const fallbackTimer = setTimeout(() => {
+      if (!fallbackTriggered) {
+        fallbackTriggered = true;
+        console.log('Iframe loading timeout - falling back to popup window');
+        document.body.removeChild(testIframe);
+        this.openPaymentInPopup(url, result, self);
+      }
+    }, 3000);
+    testIframe.addEventListener('load', () => {
+      clearTimeout(fallbackTimer);
+      if (!fallbackTriggered) {
+        console.log('Iframe loading successful - proceeding with iframe approach');
+        document.body.removeChild(testIframe);
+        this.createIframeInAppBrowser(url, result, self);
+      }
+    });
+    testIframe.addEventListener('error', () => {
+      clearTimeout(fallbackTimer);
+      if (!fallbackTriggered) {
+        fallbackTriggered = true;
+        console.log('Iframe loading failed - falling back to popup window');
+        document.body.removeChild(testIframe);
+        this.openPaymentInPopup(url, result, self);
+      }
+    });
+    // Monitor for X-Frame-Options errors
+    window.addEventListener('message', event => {
+      if (event.data && typeof event.data === 'string' && (event.data.includes('X-Frame-Options') || event.data.includes('frame-ancestors'))) {
+        clearTimeout(fallbackTimer);
+        if (!fallbackTriggered) {
+          fallbackTriggered = true;
+          console.log('X-Frame-Options detected - falling back to popup window');
+          document.body.removeChild(testIframe);
+          this.openPaymentInPopup(url, result, self);
+        }
+      }
+    });
+    document.body.appendChild(testIframe);
+  }
+  openPaymentInPopup(url, result, self) {
+    var _document$getElementB, _document$getElementB2;
+    console.log('Opening payment in popup window');
+    // Create overlay for popup management
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+    // Create popup status container
+    const statusContainer = document.createElement('div');
+    statusContainer.style.cssText = `
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        `;
+    statusContainer.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite;"></div>
+                <h3 style="margin: 0 0 10px 0; color: #333;">Payment Gateway</h3>
+                <p style="margin: 0; color: #666; font-size: 14px;">Complete your payment in the popup window</p>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <button id="checkPaymentBtn" style="
+                    background: #3498db;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin-right: 10px;
+                ">Check Payment Status</button>
+                <button id="cancelPaymentBtn" style="
+                    background: #e74c3c;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 14px;
+                ">Cancel Payment</button>
+            </div>
+            <style>
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+        `;
+    overlay.appendChild(statusContainer);
+    document.body.appendChild(overlay);
+    // Calculate popup window size and position
+    const popupWidth = Math.min(800, window.innerWidth - 100);
+    const popupHeight = Math.min(600, window.innerHeight - 100);
+    const popupLeft = (window.innerWidth - popupWidth) / 2 + window.screenX;
+    const popupTop = (window.innerHeight - popupHeight) / 2 + window.screenY;
+    // Open popup window
+    const popup = window.open(url, 'payment-gateway', `width=${popupWidth},height=${popupHeight},left=${popupLeft},top=${popupTop},scrollbars=yes,resizable=yes,status=no,location=no,toolbar=no,menubar=no`);
+    if (!popup) {
+      overlay.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+                    <h3 style="color: #e74c3c; margin-bottom: 15px;">⚠️ Popup Blocked</h3>
+                    <p style="margin-bottom: 20px; color: #666;">Your browser blocked the payment popup. Please allow popups and try again.</p>
+                    <button onclick="window.location.reload()" style="
+                        background: #3498db;
+                        color: white;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        margin-right: 10px;
+                    ">Retry</button>
+                    <button onclick="document.body.removeChild(this.parentElement.parentElement)" style="
+                        background: #95a5a6;
+                        color: white;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                    ">Cancel</button>
+                </div>
+            `;
+      return;
+    }
+    let paymentCompleted = false;
+    let popupCheckInterval;
+    // Success handler
+    const handlePaymentSuccess = () => {
+      if (paymentCompleted) return;
+      paymentCompleted = true;
+      console.log('Payment successful detected');
+      cleanup();
+      this.firebaseAnalyticsService.logCustomEvent('payment_success', {
+        page: 'Payment Details Page'
+      });
+      this.commonStorage.localSet('bookedTicketDetails', result);
+      localStorage.setItem('bookingDetails', JSON.stringify(self.commonStorage.localGet('bookedTicketDetails')));
+      let navigationExtras = {
+        queryParams: {
+          new_booking: 'true'
+        }
+      };
+      this.navigationExtras = navigationExtras;
+      this.viewTicket = true;
+      if (this.metaData.msiteFolder == 'ourbustheme' || this.metaData.msiteFolder == 'shyamolitheme') {
+        this.paymentSuccessEvent();
+        this.navCtrl.navigateRoot('booking-details', this.navigationExtras);
+      }
+    };
+    // Failure handler
+    const handlePaymentFailure = () => {
+      if (paymentCompleted) return;
+      paymentCompleted = true;
+      console.log('Payment failure detected');
+      cleanup();
+      self.commonStorage.localRemove('bookedTicketDetails');
+      this.viewTicket = false;
+      this.paymentFailed = true;
+      if (this.metaData.msiteFolder == 'ourbustheme') {
+        this.paymentFailureEvent();
+      }
+      this.firebaseAnalyticsService.logCustomEvent('payment_failed', {
+        page: 'Payment Details Page'
+      });
+    };
+    // Monitor popup for closure or URL changes
+    const checkPopupStatus = () => {
+      try {
+        if (popup.closed) {
+          console.log('Payment popup was closed by user');
+          clearInterval(popupCheckInterval);
+          if (!paymentCompleted) {
+            handlePaymentFailure();
+          }
+          return;
+        }
+        // Try to check popup URL for success/failure indicators
+        try {
+          const popupUrl = popup.location.href;
+          if (popupUrl && popupUrl !== 'about:blank') {
+            if (popupUrl.indexOf('ticket-confirm') > -1 || popupUrl.indexOf('success') > -1) {
+              popup.close();
+              handlePaymentSuccess();
+            } else if (popupUrl.indexOf('ticket-cancel') > -1 || popupUrl.indexOf('failed') > -1 || popupUrl.indexOf('cancel') > -1) {
+              popup.close();
+              handlePaymentFailure();
+            }
+          }
+        } catch (e) {
+          // Cross-origin access blocked - this is normal
+        }
+      } catch (e) {
+        console.error('Error checking popup status:', e);
+      }
+    };
+    // Start monitoring popup
+    popupCheckInterval = setInterval(checkPopupStatus, 1000);
+    // Handle button clicks
+    (_document$getElementB = document.getElementById('checkPaymentBtn')) === null || _document$getElementB === void 0 || _document$getElementB.addEventListener('click', () => {
+      // You can implement a server-side payment status check here
+      console.log('Manual payment status check requested');
+      // For now, just focus the popup
+      if (!popup.closed) {
+        popup.focus();
+      }
+    });
+    (_document$getElementB2 = document.getElementById('cancelPaymentBtn')) === null || _document$getElementB2 === void 0 || _document$getElementB2.addEventListener('click', () => {
+      if (!popup.closed) {
+        popup.close();
+      }
+      handlePaymentFailure();
+    });
+    // Listen for messages from popup window
+    const messageHandler = event => {
+      try {
+        const paymentDomain = new URL(url).origin;
+        if (event.origin !== paymentDomain && event.origin !== window.location.origin) {
+          return;
+        }
+      } catch (e) {
+        // Ignore origin check errors
+      }
+      const data = event.data;
+      console.log('Received message from popup:', data);
+      if (typeof data === 'string') {
+        if (data.includes('ticket-confirm') || data.includes('payment-success') || data.includes('success')) {
+          popup.close();
+          handlePaymentSuccess();
+        } else if (data.includes('ticket-cancel') || data.includes('payment-failed') || data.includes('failed') || data.includes('cancel')) {
+          popup.close();
+          handlePaymentFailure();
+        }
+      } else if (typeof data === 'object' && data !== null) {
+        if (data.status === 'success' || data.type === 'payment-success') {
+          popup.close();
+          handlePaymentSuccess();
+        } else if (data.status === 'failed' || data.status === 'cancelled' || data.type === 'payment-failed') {
+          popup.close();
+          handlePaymentFailure();
+        }
+      }
+    };
+    window.addEventListener('message', messageHandler);
+    // Cleanup function
+    const cleanup = () => {
+      if (popupCheckInterval) {
+        clearInterval(popupCheckInterval);
+      }
+      window.removeEventListener('message', messageHandler);
+      document.removeEventListener('keydown', escHandler);
+      if (document.body.contains(overlay)) {
+        document.body.removeChild(overlay);
+      }
+    };
+    // Handle ESC key to close
+    const escHandler = event => {
+      if (event.key === 'Escape') {
+        if (!popup.closed) {
+          popup.close();
+        }
+        handlePaymentFailure();
+      }
+    };
+    document.addEventListener('keydown', escHandler);
+    // Auto-close overlay when popup gains focus (mobile behavior)
+    const focusHandler = () => {
+      if (!popup.closed) {
+        statusContainer.querySelector('p').textContent = 'Complete your payment in the popup window';
+      }
+    };
+    popup.addEventListener('focus', focusHandler);
+  }
+  createIframeInAppBrowser(url, result, self) {
     // Create overlay container
     const overlay = document.createElement('div');
     overlay.style.cssText = `
@@ -15979,13 +16275,6 @@ class PaymentDetailsPage {
             justify-content: center;
             transition: background-color 0.2s;
         `;
-    // Add hover effect for close button
-    closeBtn.addEventListener('mouseenter', () => {
-      closeBtn.style.backgroundColor = '#f0f0f0';
-    });
-    closeBtn.addEventListener('mouseleave', () => {
-      closeBtn.style.backgroundColor = 'transparent';
-    });
     header.appendChild(title);
     header.appendChild(closeBtn);
     // Create loading indicator
@@ -16019,197 +16308,25 @@ class PaymentDetailsPage {
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
         `;
-    // Enhanced iframe permissions and sandbox settings
-    iframe.setAttribute('allow', 'payment; microphone; camera; encrypted-media; geolocation; fullscreen; autoplay; picture-in-picture');
-    iframe.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-top-navigation allow-top-navigation-by-user-activation allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads');
-    // Add referrer policy to maintain security while allowing navigation
+    // Enhanced iframe permissions and sandbox settings (removed conflicting permissions)
+    iframe.setAttribute('allow', 'payment; encrypted-media; geolocation; fullscreen');
+    iframe.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups allow-modals');
     iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-    // Set iframe name for better identification
     iframe.setAttribute('name', 'payment-gateway-frame');
     overlay.appendChild(header);
     overlay.appendChild(loadingDiv);
     overlay.appendChild(iframe);
     document.body.appendChild(overlay);
-    let isLoaded = false;
-    let urlCheckInterval = null;
-    // Handle iframe load events
-    iframe.addEventListener('load', () => {
-      console.log('Payment iframe loaded successfully');
-      isLoaded = true;
-      // Hide loading indicator and show iframe
-      loadingDiv.style.display = 'none';
-      iframe.style.opacity = '1';
-      // Start URL monitoring after page loads
-      startUrlMonitoring();
-    });
-    iframe.addEventListener('error', e => {
-      console.error('Payment iframe failed to load:', e);
-      loadingDiv.innerHTML = `
-                <div style="text-align: center; color: #e74c3c;">
-                    <p style="font-size: 16px; margin-bottom: 10px;">⚠️ Payment Gateway Error</p>
-                    <p style="font-size: 14px; margin-bottom: 15px;">Unable to load payment page. Please try again.</p>
-                    <button onclick="window.location.reload()" style="
-                        background: #3498db;
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        font-size: 14px;
-                    ">Retry</button>
-                </div>
-            `;
-    });
     // Handle close button
     closeBtn.addEventListener('click', () => {
-      cleanup();
       document.body.removeChild(overlay);
-      console.log('Web in-app browser closed by user');
+      console.log('Iframe in-app browser closed by user');
     });
-    // Function to start URL monitoring
-    const startUrlMonitoring = () => {
-      // Monitor iframe navigation for success/failure URLs
-      const checkNavigation = () => {
-        try {
-          var _iframe$contentWindow;
-          const iframeUrl = ((_iframe$contentWindow = iframe.contentWindow) === null || _iframe$contentWindow === void 0 ? void 0 : _iframe$contentWindow.location.href) || '';
-          console.log('Current iframe URL:', iframeUrl);
-          if (iframeUrl.indexOf('ticket-confirm') > -1) {
-            // Payment successful
-            handlePaymentSuccess();
-          } else if (iframeUrl.indexOf('ticket-cancel') > -1 || iframeUrl.includes('failed')) {
-            // Payment failed
-            handlePaymentFailure();
-          }
-        } catch (e) {
-          // Cross-origin restrictions prevent direct access to iframe URL
-          // This is expected for external payment gateways
-          console.log('Cannot access iframe URL due to cross-origin policy (this is normal)');
-        }
-      };
-      // Check navigation periodically (for same-origin URLs)
-      urlCheckInterval = setInterval(checkNavigation, 1000);
-      // Also check immediately
-      checkNavigation();
-    };
-    // Success handler
-    const handlePaymentSuccess = () => {
-      console.log('Payment successful detected');
-      cleanup();
-      document.body.removeChild(overlay);
-      this.firebaseAnalyticsService.logCustomEvent('payment_success', {
-        page: 'Payment Details Page'
-      });
-      this.commonStorage.localSet('bookedTicketDetails', result);
-      localStorage.setItem('bookingDetails', JSON.stringify(self.commonStorage.localGet('bookedTicketDetails')));
-      let navigationExtras = {
-        queryParams: {
-          new_booking: 'true'
-        }
-      };
-      this.navigationExtras = navigationExtras;
-      this.viewTicket = true;
-      if (this.metaData.msiteFolder == 'ourbustheme' || this.metaData.msiteFolder == 'shyamolitheme') {
-        this.paymentSuccessEvent();
-        this.navCtrl.navigateRoot('booking-details', this.navigationExtras);
-      }
-    };
-    // Failure handler
-    const handlePaymentFailure = () => {
-      console.log('Payment failure detected');
-      cleanup();
-      document.body.removeChild(overlay);
-      self.commonStorage.localRemove('bookedTicketDetails');
-      this.viewTicket = false;
-      this.paymentFailed = true;
-      if (this.metaData.msiteFolder == 'ourbustheme') {
-        this.paymentFailureEvent();
-      }
-      this.firebaseAnalyticsService.logCustomEvent('payment_failed', {
-        page: 'Payment Details Page'
-      });
-    };
-    // Listen for messages from iframe (for cross-origin communication)
-    const messageHandler = event => {
-      // Only accept messages from the payment gateway domain
-      try {
-        const paymentDomain = new URL(url).origin;
-        if (event.origin !== paymentDomain && event.origin !== window.location.origin) {
-          return;
-        }
-      } catch (e) {
-        console.warn('Could not parse payment URL origin');
-      }
-      const data = event.data;
-      console.log('Received message from iframe:', data);
-      if (typeof data === 'string') {
-        if (data.includes('ticket-confirm') || data.includes('payment-success') || data.includes('success')) {
-          handlePaymentSuccess();
-        } else if (data.includes('ticket-cancel') || data.includes('payment-failed') || data.includes('failed') || data.includes('cancel')) {
-          handlePaymentFailure();
-        }
-      } else if (typeof data === 'object' && data !== null) {
-        if (data.status === 'success' || data.type === 'payment-success') {
-          handlePaymentSuccess();
-        } else if (data.status === 'failed' || data.status === 'cancelled' || data.type === 'payment-failed') {
-          handlePaymentFailure();
-        }
-      }
-    };
-    window.addEventListener('message', messageHandler);
-    // Cleanup function
-    const cleanup = () => {
-      if (urlCheckInterval) {
-        clearInterval(urlCheckInterval);
-        urlCheckInterval = null;
-      }
-      window.removeEventListener('message', messageHandler);
-      document.removeEventListener('keydown', escHandler);
-    };
-    // Store cleanup function for potential external cleanup
-    overlay._cleanup = cleanup;
-    // Handle ESC key to close
-    const escHandler = event => {
-      if (event.key === 'Escape') {
-        cleanup();
-        document.body.removeChild(overlay);
-      }
-    };
-    document.addEventListener('keydown', escHandler);
-    // Add timeout fallback in case iframe never loads
-    const loadTimeout = setTimeout(() => {
-      if (!isLoaded) {
-        console.error('Payment iframe load timeout');
-        loadingDiv.innerHTML = `
-                    <div style="text-align: center; color: #e74c3c;">
-                        <p style="font-size: 16px; margin-bottom: 10px;">⏰ Loading Timeout</p>
-                        <p style="font-size: 14px; margin-bottom: 15px;">Payment gateway is taking too long to load.</p>
-                        <button onclick="this.parentElement.parentElement.parentElement.querySelector('iframe').src = '${url}'" style="
-                            background: #3498db;
-                            color: white;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            font-size: 14px;
-                            margin-right: 10px;
-                        ">Retry</button>
-                        <button onclick="document.body.removeChild(this.parentElement.parentElement.parentElement.parentElement)" style="
-                            background: #95a5a6;
-                            color: white;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            font-size: 14px;
-                        ">Cancel</button>
-                    </div>
-                `;
-      }
-    }, 30000); // 30 second timeout
-    // Clear timeout when iframe loads
+    // Handle iframe load
     iframe.addEventListener('load', () => {
-      clearTimeout(loadTimeout);
+      console.log('Payment iframe loaded successfully');
+      loadingDiv.style.display = 'none';
+      iframe.style.opacity = '1';
     });
     // Finally, set the iframe source to start loading
     console.log('Loading payment URL in iframe:', url);
