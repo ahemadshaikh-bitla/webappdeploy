@@ -3,98 +3,80 @@
 
 <head>
   <meta charset="utf-8"/>
-  <base href="./"> <!-- For making www folder or mobweb build change href="/" to href="./" otherwise keep it href="/"-->
+  <base href="."/>
 
-  <meta name="color-scheme" content="light dark"/>
-  <!-- <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
-  <meta name="viewport" content="initial-scale=1,user-scalable=no, width=device-width, height=device-height, viewport-fit=cover">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> -->
-
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="format-detection" content="telephone=no"/>
   <meta name="msapplication-tap-highlight" content="no"/>
-
-  <!-- Dynamic favicon -->
+  <!-- 
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-M5WZK5S');</script>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-K2EXCBVRBC"></script>
+ 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZV8R7MTMNC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-ZV8R7MTMNC');
+  </script> -->
   <link rel="icon" type="image/png" id="dynamic-favicon" href="assets/icon/favicon.png"/>
-  <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- iOS specific -->
+  <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
-  <!-- Firebase Scripts -->
-  <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js" defer=""></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js" defer=""></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
 
-  <!-- Google Maps -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBs37-7lX9WStLueH8dGxlcS7O1eC1lNEo&amp;libraries=places,geometry" defer="">
-  </script>
-<script src="https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.min.js" defer=""></script>
-  <!-- URL Parameter Processing -->
+      <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBs37-7lX9WStLueH8dGxlcS7O1eC1lNEo&amp;sensor=false&amp;v=3&amp;libraries=places,geometry" async="" defer="">
+
+
+
+    </script>
+   <script src="https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.min.js"></script>
+
   <script>
+    // console.log('location.href', window.location.href);
+    // const queryString = window.location.hash;
+    // console.log(window.location.href.split('?')[1]);
     var result = {};
     var query = window.location.href.split('?')[1];
-    if (query && query.split("&").length > 0) {
-      query.split("&").forEach(function(part) {
+    if (query && query.split("&").length>0) {
+      // console.log(query.split("&"))
+      query.split("&").forEach(function (part) {
         var item = part.split("=");
         result[item[0]] = decodeURIComponent(item[1]);
       });
+      // console.log(result);
       localStorage.setItem("booked_now", JSON.stringify(result));
     } else {
       localStorage.setItem("booked_now", null);
     }
+
     localStorage.setItem("fromphonepe", window.location.href.split('?')[1] ? window.location.href.split('?')[1].split('=')[1] : 'false');
   </script>
-
-  <!-- EaseBuzz Checkout -->
-  <script src="https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js" defer=""></script>
-
-  <!-- PWA Support -->
+  <script src="https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js"></script>
+  <!-- <script src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script> -->
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#1976d2">
-
   <title></title>
-<link rel="stylesheet" href="styles.eeb16eee2256b818.css"></head>
+  <meta name="theme-color" content="#1976d2">
+<link rel="stylesheet" href="styles.css"></head>
+ 
 
 <body>
-  <app-root></app-root>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5WZK5S" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <app-root>
+
+  </app-root>
+
   <noscript>Please enable JavaScript to continue using this application.</noscript>
-<script src="runtime.773c5fdb781b8a50.js" type="module"></script><script src="polyfills.acab26bd8cef9167.js" type="module"></script><script src="main.2a80521817196a13.js" type="module"></script></body>
+<script src="runtime.js" type="module"></script><script src="polyfills.js" type="module"></script><script src="cordova.js" defer></script><script src="vendor.js" type="module"></script><script src="main.js" type="module"></script></body>
 
 </html>
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <title>Ionic App</title>
-
-  <base href="/" />
-
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
-
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
-
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <script
-  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry"
-  async
-  defer
-></script>
-</head>
-
-<body>
-  <app-root></app-root>
-</body>
-
-</html> -->
